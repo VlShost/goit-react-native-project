@@ -21,17 +21,18 @@ export default function LoginScreen() {
           <ImageBackground source={bgImg} style={styles.background}>
             <View style={styles.menuContainer}>
               <Text style={styles.title}>Увійти</Text>
+              <View>
+                <Input placeholder="Адреса електронної пошти" inputMode="email" />
+                <Input placeholder="Пароль" secureTextEntry={true} />
 
-              <Input placeholder="Адреса електронної пошти" inputMode="email" />
-              <Input placeholder="Пароль" secureTextEntry={true} />
+                <Pressable style={styles.passwShowWrapper}>
+                  <Text style={styles.passwShowText}>Показати</Text>
+                </Pressable>
 
-              <Pressable style={styles.passwShowWrapper}>
-                <Text style={styles.passwShowText}>Показати</Text>
-              </Pressable>
-
-              <Pressable style={styles.button}>
-                <Text style={styles.buttonText}>Увійти</Text>
-              </Pressable>
+                <Pressable style={styles.button}>
+                  <Text style={styles.buttonText}>Увійти</Text>
+                </Pressable>
+              </View>
 
               <Pressable style={styles.registrationLinkContainer}>
                 <Text style={styles.registrationText}>

@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { bgImg } from '../components/BgImg';
+import Input from '../components/Input';
 
 export default function RegistrationScreen() {
   return (
@@ -36,21 +37,19 @@ export default function RegistrationScreen() {
 
               <Text style={styles.title}>Реєстрація</Text>
 
-              <TextInput style={styles.input} placeholder="Логін" inputMode="text" />
-              <TextInput
-                style={styles.input}
-                placeholder="Адреса електронної пошти"
-                inputMode="email"
-              />
-              <TextInput style={styles.input} placeholder="Пароль" />
+              <View>
+                <Input placeholder="Логін" inputMode="text" />
+                <Input placeholder="Адреса електронної пошти" inputMode="email" />
+                <Input placeholder="Пароль" secureTextEntry={true} />
 
-              <Pressable style={styles.passwShow}>
-                <Text style={styles.passwShowText}>Показати</Text>
-              </Pressable>
+                <Pressable style={styles.passwShow}>
+                  <Text style={styles.passwShowText}>Показати</Text>
+                </Pressable>
 
-              <Pressable style={styles.button}>
-                <Text style={styles.buttonText}>Зареєстуватися</Text>
-              </Pressable>
+                <Pressable style={styles.button}>
+                  <Text style={styles.buttonText}>Зареєстуватися</Text>
+                </Pressable>
+              </View>
 
               <Pressable style={styles.loginLinkContainer}>
                 <Text style={styles.loginText}>Вже є акаунт? Увійти</Text>
@@ -97,18 +96,6 @@ const styles = StyleSheet.create({
     right: -12.5,
     backgroundColor: '#ffffff',
     borderRadius: 50,
-  },
-  input: {
-    backgroundColor: '#F6F6F6',
-    width: 343,
-    height: 50,
-    borderRadius: 8,
-    marginTop: 16,
-    padding: 16,
-    fontStyle: 'normal',
-    fontWeight: '400',
-    fontSize: 16,
-    lineHeight: 19,
   },
   title: {
     marginTop: 92,

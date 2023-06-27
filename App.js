@@ -14,8 +14,8 @@ export default function App() {
   }
 
   return (
-    // <RegistrationScreen />
+    <RegistrationScreen />
     // <LoginScreen />
-    <PostsScreen />
+    // <PostsScreen />
   );
 }

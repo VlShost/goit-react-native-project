@@ -4,7 +4,6 @@ import {
   Text,
   ImageBackground,
   Pressable,
-  TextInput,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
@@ -23,12 +22,8 @@ export default function LoginScreen() {
             <View style={styles.menuContainer}>
               <Text style={styles.title}>Увійти</Text>
 
-              <TextInput
-                style={styles.input}
-                placeholder="Адреса електронної пошти"
-                inputMode="email"
-              />
-              <TextInput style={styles.input} placeholder="Пароль" />
+              <Input placeholder="Адреса електронної пошти" inputMode="email" />
+              <Input placeholder="Пароль" secureTextEntry={true} />
 
               <Pressable style={styles.passwShowWrapper}>
                 <Text style={styles.passwShowText}>Показати</Text>
@@ -70,18 +65,6 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     alignItems: 'center',
-  },
-  input: {
-    backgroundColor: '#F6F6F6',
-    width: 343,
-    height: 50,
-    borderRadius: 8,
-    marginTop: 16,
-    padding: 16,
-    fontStyle: 'normal',
-    fontWeight: '400',
-    fontSize: 16,
-    lineHeight: 19,
   },
   title: {
     marginTop: 32,

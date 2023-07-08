@@ -4,16 +4,29 @@ import {
   Text,
   ImageBackground,
   Pressable,
-  TextInput,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
+import { useState } from 'react';
 import { AntDesign } from '@expo/vector-icons';
 import { bgImg } from '../components/BgImg';
 import Input from '../components/Input';
 
 export default function RegistrationScreen() {
+  const [login, setLogin] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordHidden, setPasswordHidden] = useState(true);
+
+  const handleSubmit = () => {
+    console.log(`login: ${login}`, `email: ${email}`, `password: ${password}`);
+  };
+
+  const handlePressShowButton = () => {
+    setPasswordHidden((hidden) => !hidden);
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
@@ -38,16 +51,31 @@ export default function RegistrationScreen() {
               <Text style={styles.title}>Реєстрація</Text>
 
               <View>
-                <Input placeholder="Логін" inputMode="text" />
-                <Input placeholder="Адреса електронної пошти" inputMode="email" />
-                <Input placeholder="Пароль" secureTextEntry={true} />
+                <Input placeholder="Логін" inputMode="text" value={login} onChangeText={setLogin} />
+                <Input
+                  placeholder="Адреса електронної пошти"
+                  inputMode="email"
+                  value={email}
+                  onChangeText={setEmail}
+                />
+                <Input
+                  placeholder="Пароль"
+                  inputMode="text"
+                  value={password}
+                  secureTextEntry={passwordHidden}
+                  onChangeText={setPassword}
+                />
 
                 <Pressable style={styles.passwShow}>
-                  <Text style={styles.passwShowText}>Показати</Text>
+                  <Text style={styles.passwShowText} onPress={handlePressShowButton}>
+                    {!passwordHidden ? 'Приховати' : 'Показати'}
+                  </Text>
                 </Pressable>
 
                 <Pressable style={styles.button}>
-                  <Text style={styles.buttonText}>Зареєстуватися</Text>
+                  <Text style={styles.buttonText} onPress={handleSubmit}>
+                    Зареєстуватися
+                  </Text>
                 </Pressable>
               </View>
 
@@ -115,7 +143,6 @@ const styles = StyleSheet.create({
     marginTop: 43,
   },
   passwShowText: {
-    marginRight: 16,
     fontFamily: 'Roboto-400',
     fontSize: 16,
     lineHeight: 19,
@@ -123,7 +150,7 @@ const styles = StyleSheet.create({
   },
   passwShow: {
     top: -34,
-    left: 130,
+    left: 255,
   },
   buttonText: {
     color: '#FFFFFF',

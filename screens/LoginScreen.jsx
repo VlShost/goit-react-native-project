@@ -9,8 +9,22 @@ import {
   Keyboard,
 } from 'react-native';
 import { bgImg } from '../components/BgImg';
+import Input from '../components/Input';
+import { useState } from 'react';
 
 export default function LoginScreen() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordHidden, setPasswordHidden] = useState(true);
+
+  const handleSubmit = () => {
+    console.log(`email: ${email}`, `password: ${password}`);
+  };
+
+  const handlePressShowButton = () => {
+    setPasswordHidden((hidden) => !hidden);
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
@@ -21,16 +35,32 @@ export default function LoginScreen() {
           <ImageBackground source={bgImg} style={styles.background}>
             <View style={styles.menuContainer}>
               <Text style={styles.title}>Увійти</Text>
+
               <View>
-                <Input placeholder="Адреса електронної пошти" inputMode="email" />
-                <Input placeholder="Пароль" secureTextEntry={true} />
+                <Input
+                  placeholder="Адреса електронної пошти"
+                  inputMode="email"
+                  value={email}
+                  onChangeText={setEmail}
+                />
+                <Input
+                  placeholder="Пароль"
+                  inputMode="text"
+                  value={password}
+                  secureTextEntry={passwordHidden}
+                  onChangeText={setPassword}
+                />
 
                 <Pressable style={styles.passwShowWrapper}>
-                  <Text style={styles.passwShowText}>Показати</Text>
+                  <Text style={styles.passwShowText} onPress={handlePressShowButton}>
+                    {!passwordHidden ? 'Приховати' : 'Показати'}
+                  </Text>
                 </Pressable>
 
                 <Pressable style={styles.button}>
-                  <Text style={styles.buttonText}>Увійти</Text>
+                  <Text style={styles.buttonText} onPress={handleSubmit}>
+                    Увійти
+                  </Text>
                 </Pressable>
               </View>
 
@@ -85,7 +115,6 @@ const styles = StyleSheet.create({
     marginTop: 43,
   },
   passwShowText: {
-    marginRight: 16,
     fontFamily: 'Roboto-400',
     fontSize: 16,
     lineHeight: 19,
@@ -93,7 +122,7 @@ const styles = StyleSheet.create({
   },
   passwShowWrapper: {
     top: -34,
-    left: 130,
+    left: 255,
   },
   buttonText: {
     color: '#FFFFFF',

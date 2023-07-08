@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, TextInput } from 'react-native';
 
-export default function Input({ placeholder, inputMode, secureTextEntry }) {
+export default function Input({ placeholder, inputMode, secureTextEntry, onChangeText }) {
   const [isFocused, setIsFocused] = useState(false);
 
   const handleFocus = () => {
@@ -20,6 +20,7 @@ export default function Input({ placeholder, inputMode, secureTextEntry }) {
       secureTextEntry={secureTextEntry}
       onFocus={handleFocus}
       onBlur={handleBlur}
+      onChangeText={onChangeText}
     />
   );
 }

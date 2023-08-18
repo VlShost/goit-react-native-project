@@ -7,11 +7,14 @@ import {
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
+  TouchableOpacity,
 } from 'react-native';
 import { useState } from 'react';
 import { AntDesign } from '@expo/vector-icons';
-import { bgImg } from '../components/BgImg';
-import Input from '../components/Input';
+import { bgImg } from '../../../components/BgImg';
+import AuthInput from '../../../components/AuthInput';
+import AuthBtn from '../../../components/AuthBtn';
+import { useNavigation } from '@react-navigation/native';
 
 export default function RegistrationScreen() {
   const [login, setLogin] = useState('');
@@ -19,8 +22,11 @@ export default function RegistrationScreen() {
   const [password, setPassword] = useState('');
   const [passwordHidden, setPasswordHidden] = useState(true);
 
+  const navigation = useNavigation();
+
   const handleSubmit = () => {
     console.log(`login: ${login}`, `email: ${email}`, `password: ${password}`);
+    navigation.navigate('Home');
   };
 
   const handlePressShowButton = () => {
@@ -32,6 +38,7 @@ export default function RegistrationScreen() {
       <KeyboardAvoidingView
         style={styles.keyboardAvoidingViewStyles}
         behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={-180}
       >
         <View style={styles.container}>
           <ImageBackground source={bgImg} style={styles.background}>
@@ -51,15 +58,23 @@ export default function RegistrationScreen() {
               <Text style={styles.title}>Реєстрація</Text>
 
               <View>
-                <Input placeholder="Логін" inputMode="text" value={login} onChangeText={setLogin} />
-                <Input
+                <AuthInput
+                  placeholder="Логін"
+                  placeholderTextColor="#BDBDBD"
+                  inputMode="text"
+                  value={login}
+                  onChangeText={setLogin}
+                />
+                <AuthInput
                   placeholder="Адреса електронної пошти"
+                  placeholderTextColor="#BDBDBD"
                   inputMode="email"
                   value={email}
                   onChangeText={setEmail}
                 />
-                <Input
+                <AuthInput
                   placeholder="Пароль"
+                  placeholderTextColor="#BDBDBD"
                   inputMode="text"
                   value={password}
                   secureTextEntry={passwordHidden}
@@ -72,15 +87,13 @@ export default function RegistrationScreen() {
                   </Text>
                 </Pressable>
 
-                <Pressable style={styles.button}>
-                  <Text style={styles.buttonText} onPress={handleSubmit}>
-                    Зареєстуватися
-                  </Text>
-                </Pressable>
+                <AuthBtn text={'Зареєструватися'} onPress={handleSubmit} />
               </View>
 
               <Pressable style={styles.loginLinkContainer}>
-                <Text style={styles.loginText}>Вже є акаунт? Увійти</Text>
+                <Text style={styles.loginText} onPress={() => navigation.navigate('LoginScreen')}>
+                  Вже є акаунт? Увійти
+                </Text>
               </Pressable>
             </View>
           </ImageBackground>
@@ -94,9 +107,6 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: '100%',
-    color: '#FFFFFF',
-    backgroundColor: '#FF6C00',
-    display: 'flex',
     justifyContent: 'center',
   },
   menuContainer: {
@@ -133,15 +143,6 @@ const styles = StyleSheet.create({
     lineHeight: 35,
     textAlign: 'center',
   },
-  button: {
-    backgroundColor: '#FF6C00',
-    height: 50,
-    width: 343,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 100,
-    marginTop: 43,
-  },
   passwShowText: {
     fontFamily: 'Roboto-400',
     fontSize: 16,
@@ -151,10 +152,6 @@ const styles = StyleSheet.create({
   passwShow: {
     top: -34,
     left: 255,
-  },
-  buttonText: {
-    color: '#FFFFFF',
-    fontFamily: 'Roboto-400',
   },
   loginLinkContainer: {
     marginTop: 16,

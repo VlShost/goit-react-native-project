@@ -1,10 +1,13 @@
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
-import LoginScreen from './navigation/screens/auth/LoginScreen';
-import Home from './navigation/Home';
-import RegistrationScreen from './navigation/screens/auth/RegistrationScreen';
-import { useFonts } from 'expo-font';
 import { createStackNavigator } from '@react-navigation/stack';
+import { useFonts } from 'expo-font';
+
+import Home from './navigation/Home';
+import LoginScreen from './navigation/screens/auth/LoginScreen';
+import RegistrationScreen from './navigation/screens/auth/RegistrationScreen';
+import MapScreen from './navigation/screens/main/MapScreen';
+import CommentsScreen from './navigation/screens/main/CommentsScreen';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -40,6 +43,30 @@ export default function App() {
           component={Home}
           options={{
             headerShown: false,
+          }}
+        />
+        <MainStack.Screen
+          name="MapScreen"
+          component={MapScreen}
+          options={{
+            headerTitle: 'Розташування',
+            headerTitleAlign: 'center',
+            headerStyle: {
+              height: 88,
+              borderBottomWidth: 1,
+            },
+          }}
+        />
+        <MainStack.Screen
+          name="CommentsScreen"
+          component={CommentsScreen}
+          options={{
+            headerTitle: 'Коментарі',
+            headerTitleAlign: 'center',
+            headerStyle: {
+              height: 88,
+              borderBottomWidth: 1,
+            },
           }}
         />
       </MainStack.Navigator>

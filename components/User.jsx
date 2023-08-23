@@ -1,5 +1,5 @@
-import { View, StyleSheet, Image, Text } from 'react-native';
 import React from 'react';
+import { View, StyleSheet, Image, Text } from 'react-native';
 
 const User = ({ avatar, name, email }) => {
   return (

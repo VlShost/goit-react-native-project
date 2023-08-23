@@ -1,8 +1,9 @@
 import { StyleSheet, View, ImageBackground, Pressable, Text, ScrollView } from 'react-native';
 
+import posts from '../../../assets/db/posts.json';
 import { AntDesign, Feather } from '@expo/vector-icons';
 import { bgImg } from '../../../components/BgImg';
-import posts from '../../../assets/db/posts.json';
+
 import PostCard from '../../../components/PostCard';
 
 const postImg = require('../../../assets/images/Forest.jpg');
@@ -29,16 +30,16 @@ export default function ProfileScreen({ navigation }) {
             <Text style={styles.title}>Natali Romanova</Text>
           </View>
 
-          <ScrollView style={styles.postsWrapper}>
+          <ScrollView style={styles.postsWrapper} showsVerticalScrollIndicator={false}>
             <View>
-              {posts.map((element) => (
+              {posts.map((el) => (
                 <PostCard
-                  key={element.id}
+                  key={el.id}
                   img={postImg}
-                  text={element.name}
+                  text={el.name}
                   messages={0}
                   likes={0}
-                  location={element.location}
+                  location={el.location}
                 />
               ))}
             </View>

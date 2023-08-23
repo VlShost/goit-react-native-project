@@ -1,38 +1,86 @@
+import { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
   Text,
   Pressable,
+  Image,
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
   Keyboard,
-  SafeAreaView,
+  ImageBackground,
 } from 'react-native';
-import { useEffect, useState } from 'react';
-import CreatePostBtn from '../../../components/CreatePostBtn';
-import PostInput from '../../../components/PostInput';
+import { Camera } from 'expo-camera';
+import * as Location from 'expo-location';
+import * as MediaLibrary from 'expo-media-library';
 import { SimpleLineIcons, Feather, FontAwesome } from '@expo/vector-icons';
 
+import CreatePostBtn from '../../../components/CreatePostBtn';
+import PostInput from '../../../components/PostInput';
+
 export default function CreatePostsScreen({ navigation }) {
-  const [name, setName] = useState('');
-  const [location, setLocation] = useState('');
+  const [photoName, setPhotoName] = useState('');
+  const [photoLocation, setPhotoLocation] = useState('');
   const [isDisabled, setIsDisabled] = useState(true);
+  const [hasPermission, setHasPermission] = useState(null);
+  const [cameraRef, setCameraRef] = useState(null);
+  const [photo, setPhoto] = useState(null);
 
   useEffect(() => {
-    if (name || location) {
+    if (photoName || photoLocation) {
       setIsDisabled(false);
+      console.log(photoName);
+      console.log(photoLocation);
     }
-  }, [name, location]);
+    // setIsDisabled(true);
+  }, [photoName, photoLocation]);
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    async () => {
+      const { status } = await Camera.useCameraPermissions();
+      await MediaLibrary.requestPermissionsAsync();
+
+      setHasPermission(status === 'granted');
+    };
+  }, []);
 
   const handleReset = () => {
-    setName('');
-    setLocation('');
+    setPhoto(null);
+    setPhotoName('');
+    setPhotoLocation('');
   };
 
   const handleSubmit = () => {
     handleReset();
-    navigation.navigate('Публікації');
+    navigation.navigate('Публікації', { photo });
   };
+
+  const takePhoto = async () => {
+    if (cameraRef) {
+      const { uri } = await cameraRef.takePictureAsync();
+      await MediaLibrary.createAssetAsync(uri);
+      const location = await Location.getCurrentPositionAsync();
+      setPhotoLocation(location);
+      setPhoto(uri);
+    }
+  };
+
+  if (hasPermission === null) {
+    // return <View style={styles.postImgCard} />;
+  }
+  if (hasPermission === false) {
+    return <Text>No access to camera</Text>;
+  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -43,24 +91,36 @@ export default function CreatePostsScreen({ navigation }) {
         <View style={styles.container}>
           <View style={styles.formWrapper}>
             <View style={styles.postImgCard}>
-              <Pressable style={styles.postImgIcon} activeOpacity={0.5}>
-                <FontAwesome name="camera" size={24} color="#BDBDBD" />
-              </Pressable>
+              {photo ? (
+                <ImageBackground source={{ uri: photo }} style={styles.photoImg}>
+                  <Pressable style={styles.postImgIcon} onPress={takePhoto}>
+                    <FontAwesome name="camera" size={24} color="#FFFFFF" />
+                  </Pressable>
+                </ImageBackground>
+              ) : (
+                <Camera style={styles.camera} ref={setCameraRef}>
+                  <Pressable style={styles.postImgIcon} onPress={takePhoto}>
+                    <FontAwesome name="camera" size={24} color="#BDBDBD" />
+                  </Pressable>
+                </Camera>
+              )}
             </View>
 
-            <Text style={styles.postImageText}>Завантажте фото</Text>
+            <Text style={styles.postImageText}>
+              {photo ? 'Редагувати фото' : 'Завантажте фото'}
+            </Text>
 
             <View style={styles.postForm}>
               <PostInput
                 placeholder="Назва..."
                 placeholderTextColor="#BDBDBD"
                 inputMode="text"
-                value={name}
+                value={photoName}
                 onChangeText={(value) => {
                   if (value === '') {
                     setIsDisabled(true);
                   } else setIsDisabled(false);
-                  setName(value);
+                  setPhotoName(value);
                 }}
               />
               <View style={styles.locationInputContainer}>
@@ -68,13 +128,17 @@ export default function CreatePostsScreen({ navigation }) {
                 <PostInput
                   placeholder="Місцевість..."
                   placeholderTextColor="#BDBDBD"
-                  inputMode="search"
-                  value={location}
+                  inputMode="text"
+                  value={
+                    photoLocation
+                      ? `${photoLocation.coords.latitude}, ${photoLocation.coords.longitude}`
+                      : ''
+                  }
                   onChangeText={(value) => {
                     if (value === '') {
                       setIsDisabled(true);
                     } else setIsDisabled(false);
-                    setLocation(value);
+                    setPhotoLocation(value);
                   }}
                   style={styles.locationInput}
                 />
@@ -100,14 +164,24 @@ const styles = StyleSheet.create({
   formWrapper: {
     marginTop: 32,
   },
-
   postImgCard: {
     width: 343,
     height: 240,
     backgroundColor: '#E8E8E8',
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  camera: {
+    height: 240,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  photoImg: {
+    width: '100%',
+    height: 240,
     borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   postImageText: {
     marginTop: 8,
@@ -123,7 +197,7 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 100,
     color: '#FFFFFF',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFFFFF4D',
   },
   postForm: {
     marginTop: 59,

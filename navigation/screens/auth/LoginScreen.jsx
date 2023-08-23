@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -8,11 +9,11 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 import { bgImg } from '../../../components/BgImg';
 import AuthInput from '../../../components/AuthInput';
 import AuthBtn from '../../../components/AuthBtn';
-import { useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');

@@ -1,11 +1,12 @@
 import React from 'react';
 import { StyleSheet, View, Pressable } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Feather, Ionicons } from '@expo/vector-icons';
+
 import PostsScreen from './screens/main/PostsScreen';
 import CreatePostsScreen from './screens/main/CreatePostsScreen';
 import ProfileScreen from './screens/main/ProfileScreen';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
-import { Feather, Ionicons } from '@expo/vector-icons';
+import MapScreen from './screens/main/MapScreen';
 
 const postsName = 'Публікації';
 const createPostsName = 'Створити публікацію';

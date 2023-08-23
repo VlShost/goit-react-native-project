@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, TextInput } from 'react-native';
 
 export default function PostInput({
@@ -9,6 +9,7 @@ export default function PostInput({
   onChangeText,
   style,
   onSubmitEditing,
+  value,
 }) {
   return (
     <TextInput
@@ -19,6 +20,7 @@ export default function PostInput({
       secureTextEntry={secureTextEntry}
       onChangeText={onChangeText}
       onSubmitEditing={onSubmitEditing}
+      value={value}
     />
   );
 }

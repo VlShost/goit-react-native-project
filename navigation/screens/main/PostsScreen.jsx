@@ -1,16 +1,14 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, ScrollView, SafeAreaView } from 'react-native';
 
 import User from '../../../components/User';
 import PostCard from '../../../components/PostCard';
 import posts from '../../../assets/db/posts.json';
-import { ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native';
 
 const avatar = require('../../../assets/images/avatar.jpg');
 const postImg = require('../../../assets/images/Forest.jpg');
 
-export default function PostsScreen() {
+export default function PostsScreen({ route }) {
   return (
     <SafeAreaView style={{ backgroundColor: '#FFFFFF' }}>
       <ScrollView>
@@ -19,13 +17,13 @@ export default function PostsScreen() {
         </View>
 
         <View>
-          {posts.map((element) => (
+          {posts.map((el) => (
             <PostCard
-              key={element.id}
+              key={el.id}
               img={postImg}
-              text={element.name}
-              messages={0}
-              location={element.location}
+              text={el.name}
+              messages={6}
+              location={el.location}
               hidden
             />
           ))}

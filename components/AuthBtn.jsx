@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Text, Pressable, StyleSheet } from 'react-native';
 
 export default function AuthBtn({ text, onPress }) {

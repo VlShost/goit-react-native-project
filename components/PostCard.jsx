@@ -1,8 +1,12 @@
-import { View, StyleSheet, ImageBackground, Text } from 'react-native';
 import React from 'react';
+import { View, StyleSheet, ImageBackground, Text, Pressable } from 'react-native';
+
+import { useNavigation } from '@react-navigation/native';
 import { Feather, SimpleLineIcons, AntDesign } from '@expo/vector-icons';
 
 const PostCard = ({ img, text, messages, likes, location, hidden }) => {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <ImageBackground source={img} style={styles.postImage} />
@@ -10,16 +14,23 @@ const PostCard = ({ img, text, messages, likes, location, hidden }) => {
 
       <View style={styles.infoWrapper}>
         <View style={styles.info}>
-          <Feather name="message-circle" size={24} color="#BDBDBD" />
-          <Text style={styles.infoCounter}>{messages}</Text>
+          <Pressable
+            style={styles.info}
+            onPress={() => navigation.navigate('CommentsScreen', { img })}
+          >
+            <Feather name="message-circle" size={24} color="#BDBDBD" />
+            <Text style={styles.infoCounter}>{messages}</Text>
+          </Pressable>
           <View style={hidden ? styles.likesCounterHidden : styles.info}>
             <AntDesign name="like2" size={24} color="#BDBDBD" style={{ marginLeft: 24 }} />
             <Text style={styles.infoCounter}>{likes}</Text>
           </View>
         </View>
         <View style={styles.info}>
-          <SimpleLineIcons name="location-pin" size={24} color="#BDBDBD" />
-          <Text style={styles.infoLink}>{location}</Text>
+          <Pressable style={styles.info} onPress={() => navigation.navigate('MapScreen')}>
+            <SimpleLineIcons name="location-pin" size={24} color="#BDBDBD" />
+            <Text style={styles.infoLink}>{location}</Text>
+          </Pressable>
         </View>
       </View>
     </View>
